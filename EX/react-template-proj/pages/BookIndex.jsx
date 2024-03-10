@@ -34,7 +34,7 @@ export function BookIndex() {
             <BookFilter
                 onSetFilter={onSetFilter}
                 filterBy={filterBy} />
-            <h1 className="gwendolyn">Our Books</h1></React.Fragment>}
+            <h1 className="gwendolyn books-list-header">Our Books</h1></React.Fragment>}
         {!selectedBook && <BookList books={books}
         onSelectBook={onSelectBook}/>}
         {

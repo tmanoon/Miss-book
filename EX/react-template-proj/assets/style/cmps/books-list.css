@@ -4,3 +4,8 @@
     justify-items: center;
     gap: 1em;
 }
+
+.books-list-header {
+    font-size: 3em;
+    text-align: center;
+}
