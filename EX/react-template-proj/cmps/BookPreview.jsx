@@ -12,8 +12,7 @@ export function BookPreview( {book} ) {
         return <article className="book-preview">
             <h2>{book.title}</h2>
             <h5>Price : {book.listPrice.amount}</h5>
-            {/* <img src={`assets/img/${car.vendor}.png`} /> */}
-            <button onClick={(event) => onFullDetails(event)}>Show full details</button>
+            <img className="thumbnail" src={book.thumbnail} />
             {isFullDetails && <BookDetails book={book}/>}
         </article>
 }

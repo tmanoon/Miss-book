@@ -28,13 +28,13 @@ export function BookIndex() {
         setSelectedbook(book)
     }
 
-    if (!books) return <div>loading...</div>
+    if (!books) return <div className="gwendolyn loading-div">loading...</div>
     return <section className="book-index">
         {<React.Fragment>
             <BookFilter
                 onSetFilter={onSetFilter}
                 filterBy={filterBy} />
-            <h1>Our Books</h1></React.Fragment>}
+            <h1 className="gwendolyn">Our Books</h1></React.Fragment>}
         {!selectedBook && <BookList books={books}
         onSelectBook={onSelectBook}/>}
         {
