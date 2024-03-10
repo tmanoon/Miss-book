@@ -49,8 +49,8 @@ function save(car) {
     }
 }
 
-function getEmptyBook(title, description, thumbnail, listPrice) {
-    return { id: '', title, description, thumbnail, listPrice }
+function getEmptyBook(title, listPrice) {
+    return { id: '', title, listPrice }
 }
 
 function getFilterBy() {
