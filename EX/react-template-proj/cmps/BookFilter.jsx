@@ -19,7 +19,6 @@ export function BookFilter({ onSetFilter, filterBy }) {
 		setFilterByToEdit((prevFilterBy) => ({ ...prevFilterBy, [field]: value }))
 	}
 
-	console.log('filterByToEdit', filterByToEdit)
 	return <section className="car-filter">
 		<h2>Filter our books</h2>
 

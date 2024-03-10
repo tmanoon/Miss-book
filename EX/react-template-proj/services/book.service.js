@@ -13,7 +13,8 @@ export const bookService = {
     getEmptyBook,
     // getNextCarId,
     getFilterBy,
-    setFilterBy
+    setFilterBy,
+    getDefaultFilter
 }
 
 window.bs = bookService
