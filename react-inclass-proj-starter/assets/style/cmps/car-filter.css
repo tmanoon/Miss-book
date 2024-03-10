@@ -1,0 +1,30 @@
+.car-filter {
+    background-color: var(--clr2bg);
+    padding: 1rem;
+    font-family: 'Lucida Sans';
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.114);
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+.car-filter form {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 5px;
+    align-items: center;
+}
+
+.car-filter h2 {
+    font-family: 'Lucida Sans';
+    margin: 0 0 1rem;
+}
+
+.car-filter input {
+    border: 0;
+    padding: .4rem;
+    border-radius: 4px;
+}
+
+.car-filter button {
+    background: var(--clr1bg);
+}
