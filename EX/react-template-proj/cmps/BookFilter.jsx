@@ -30,14 +30,14 @@ export function BookFilter({ onSetFilter, filterBy }) {
 				value={filterByToEdit.txt}
 				onChange={handleChange}
 				placeholder="By title" />
-{/* 
-			<label htmlFor="categories">Categories</label>
+
+			<label htmlFor="price">Price</label>
 			<input type="number"
-				id="minSpeed"
-				name="minSpeed"
-				value={filterByToEdit.minSpeed}
+				id="price"
+				name="price"
+				value={filterByToEdit.price}
 				onChange={handleChange}
-				placeholder="By min speed" /> */}
+				placeholder="By min speed" />
 
 			<button>Filter</button>
 		</form>

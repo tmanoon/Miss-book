@@ -104,6 +104,6 @@ function _createBook(title, listPrice) {
 }
 
 function getDefaultFilter() {
-    return {title: ''}
+    return {title: '', price: 0}
 }
 
