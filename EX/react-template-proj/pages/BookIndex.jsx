@@ -1,6 +1,5 @@
 const { useState, useEffect } = React
 import { bookService } from "../services/book.service.js"
-import { BookPreview } from '../cmps/BookPreview.jsx'
 import { BookList } from '../cmps/BookList.jsx'
 import { BookDetails } from '../cmps/BookDetails.jsx'
 import { BookFilter } from '../cmps/BookFilter.jsx'
@@ -17,26 +16,27 @@ export function BookIndex() {
 
     function onSetFilter(fieldsToUpdate) {
         setFilterBy(prevFilter => ({ ...prevFilter, ...fieldsToUpdate }))
+        console.log(fieldsToUpdate)
     }
 
     function loadBooks() {
-        bookService.query()
+        bookService.query(filterBy)
             .then(books => setBooks(books))
     }
 
     if (!books) return <div>loading...</div>
     return <section className="book-index">
-        {!selectedBook && <React.Fragment>
+        {<React.Fragment>
             <BookFilter
                 onSetFilter={onSetFilter}
                 filterBy={filterBy} />
             <h1>Our Books</h1></React.Fragment>}
         <BookList books={books}
-                    // onRemoveBook={onRemoveBook}
-                    // onUpdateBook={onUpdateBook}
-                    // onSelectBook={onSelectBook}
-                />
-            
+        // onRemoveBook={onRemoveBook}
+        // onUpdateBook={onUpdateBook}
+        // onSelectBook={onSelectBook}
+        />
+
         {
             selectedBook && <BookDetails
                 book={selectedBook}

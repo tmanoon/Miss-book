@@ -19,15 +19,15 @@ export function BookFilter({ onSetFilter, filterBy }) {
 		setFilterByToEdit((prevFilterBy) => ({ ...prevFilterBy, [field]: value }))
 	}
 
-	return <section className="car-filter">
+	return <section className="book-filter">
 		<h2>Filter our books</h2>
 
 		<form onSubmit={onFilter}>
 			<label htmlFor="title">Title</label>
 			<input type="text"
 				id="title"
-				name="txt"
-				value={filterByToEdit.txt}
+				name="title"
+				value={filterByToEdit.title}
 				onChange={handleChange}
 				placeholder="By title" />
 
@@ -37,7 +37,7 @@ export function BookFilter({ onSetFilter, filterBy }) {
 				name="price"
 				value={filterByToEdit.price}
 				onChange={handleChange}
-				placeholder="By min speed" />
+				placeholder="By price" />
 
 			<button>Filter</button>
 		</form>
