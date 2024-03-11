@@ -3,6 +3,7 @@ import { storageService } from './async-storage.service.js'
 // import { booksArr } from '../books.js'
 
 const BOOK_KEY = 'bookDB'
+let reviews = []
 // var filterBy = {title: '', price: 0}
 // _createBooks()
 
@@ -12,7 +13,8 @@ export const bookService = {
     remove,
     save,
     getEmptyBook,
-    // getNextCarId,
+    getNextBookId,
+    addReview,
     getFilterBy,
     setFilterBy,
     getDefaultFilter
@@ -39,12 +41,12 @@ function get(bookId) {
     return storageService.get(BOOK_KEY, bookId)
 }
 
-function remove(carId) {
+function remove(bookId) {
     return storageService.remove(BOOK_KEY, carId)
 }
 
-function save(car) {
-    if (car.id) {
+function save(book) {
+    if (book.id) {
         return storageService.put(BOOK_KEY, car)
     } else {
         return storageService.post(BOOK_KEY, car)
@@ -81,10 +83,10 @@ function setFilterBy(filterBy = {}) {
     return filterBy
 }
 
-function getNextBookId(carId) {
+function getNextBookId(bookId) {
     return storageService.query(BOOK_KEY)
         .then(books => {
-            var idx = books.findIndex(car => car.id === carId)
+            var idx = books.findIndex(book => book.id === bookId)
             if (idx === books.length - 1) idx = -1
             return books[idx + 1].id
         })
@@ -94,3 +96,22 @@ function getDefaultFilter() {
     return { title: '', price: 0 }
 }
 
+function addReview(bookId, review) {
+    const currBook = get(bookId)
+    if(!currBook.reviews) {
+        currBook.reviews = [review]
+    } else {
+        currBook.reviews.push(review)
+    }
+}
+
+function _setNextPrevBookId(book) {
+    return storageService.query(BOOK_KEY).then((books) => {
+        const bookIdx = books.findIndex((currCar) => currCar.id === car.id)
+        const nextBook = books[carIdx + 1] ? books[bookIdx + 1] : books[0]
+        const prevBook = books[bookIdx - 1] ? books[bookIdx - 1] : books[books.length - 1]
+        book.nextBookId = nextBook.id
+        book.prevBookId = prevBook.id
+        return book
+    })
+}

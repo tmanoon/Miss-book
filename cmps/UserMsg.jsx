@@ -18,7 +18,7 @@ export function UserMsg() {
     }, [])
 
     if (!msg) return <React.Fragment></React.Fragment>
-    return <div className={"user-msg " + msg.type}>
+    return <div className={"user-msg" + msg.type}>
         {msg.txt}
     </div>
 }

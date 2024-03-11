@@ -20,6 +20,9 @@
     align-items: center;
 }
 
+.flex.align-end {
+    align-items: flex-end;
+}
 /* text helpers */
 
 .colored-text {

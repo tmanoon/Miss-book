@@ -2,12 +2,14 @@ const { useState, useEffect } = React
 const { useParams, useNavigate } = ReactRouter
 const { Link } = ReactRouterDOM
 
-import { bookService} from '../services/book.service.js'
+import { AddReview } from '../cmps/AddReview.jsx'
+import { bookService } from '../services/book.service.js'
 import { BookCategories } from "../cmps/BookCategories.jsx"
 import { BookAuthors } from '../cmps/BookAuthors.jsx'
 import { LongTxt } from "../cmps/LongTxt.jsx"
 
 export function BookDetails() {
+    const [isSaleModalVisible, setSaleModalVisible] = useState(true);
     const [length, setLength] = useState(100)
     const [isShowMore, setShowMoreMode] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
@@ -61,6 +63,11 @@ export function BookDetails() {
         return
     }
 
+    function onExitModal(ev) {
+        ev.stopPropagation()
+        setSaleModalVisible(false)
+    }
+
     if (isLoading) return <div>Loading details...</div>
     return (
         <div className="book-details-modal">
@@ -87,7 +94,25 @@ export function BookDetails() {
             <p>Price: <span className={`span ${checkPriceValue()}`}>{JSON.stringify(book.listPrice.amount)}</span></p>
             <p>Currency Code: {JSON.stringify(book.listPrice.currencyCode)}</p>
             <p>Is it on sale: {book.listPrice.isOnSale ? 'Yes' : 'No'}</p>
-            {book.listPrice.isOnSale && <dialog open className="on-sale-modal">Pay attention!<br />This book is on sale!<form method="dialog"><button>X</button></form></dialog>}
+            {book.listPrice.isOnSale && isSaleModalVisible && (
+                <div className="on-sale-modal" onClick={onExitModal}>
+                    Pay attention!<br />This book is on sale!
+                    <button onClick={onExitModal}>X</button></div>)}
+            <div className="reviews">
+                {!book.reviews && <div className="no-reviews-div">No reviews yet.</div>}
+                {book.reviews &&
+                    <ul>
+                        {book.reviews.map(review => {
+                            return <li key={review.id}>
+                                <h1>{review.fullname}</h1>
+                                <h3>{review.rating}</h3>
+                                <p>{review.readAt}</p>
+                            </li>
+                        })}
+                    </ul>}
+                <AddReview />
+            </div>
         </div>
     )
+
 }
