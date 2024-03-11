@@ -1,12 +1,14 @@
 .user-msg {
     background-color: lightgray;
-    padding: .5em 1em;
+    padding: 1em;
     position: fixed;
     bottom: 0;
     right: 1em;
     color: white;
     font-weight: bold;
     border-radius: 2px;
+    border: .3em solid var(--gray1);
+    font-size: 1.3em;
 }
 
 .user-msg.success {

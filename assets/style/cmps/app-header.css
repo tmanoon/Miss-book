@@ -23,7 +23,7 @@
 
 }
 
-.app-nav-header > a:hover {
+.app-nav-header > a:hover, .app-nav-header > a.active {
   text-decoration: line-through;
 
 }

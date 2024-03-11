@@ -1,6 +1,6 @@
 import { utilService } from './util.service.js'
 import { storageService } from './async-storage.service.js'
-import { booksArr } from '../../books.js'
+// import { booksArr } from '../books.js'
 
 const BOOK_KEY = 'bookDB'
 // var filterBy = {title: '', price: 0}
@@ -18,7 +18,7 @@ export const bookService = {
     getDefaultFilter
 }
 
-utilService.saveToStorage(BOOK_KEY, booksArr)
+// utilService.saveToStorage(BOOK_KEY, booksArr)
 window.bs = bookService
 
 function query(filterBy) {
@@ -35,8 +35,8 @@ function query(filterBy) {
         })
 }
 
-function get(carId) {
-    return storageService.get(BOOK_KEY, carId)
+function get(bookId) {
+    return storageService.get(BOOK_KEY, bookId)
 }
 
 function remove(carId) {
@@ -51,16 +51,32 @@ function save(car) {
     }
 }
 
-function getEmptyBook(title, listPrice) {
-    return { id: '', title, listPrice }
+function getEmptyBook(title = '', price = '') {
+    return {
+        "id": '',
+        "title": '',
+        "subtitle": '',
+        "authors": [],
+        "publishedDate": 0,
+        "description": '',
+        "pageCount": 0,
+        "categories": [],
+        "thumbnail": '',
+        "language": '',
+        "listPrice": {
+            "amount": 0,
+            "currencyCode": '',
+            "isOnSale": false
+        }
+    }
 }
 
 function getFilterBy() {
-    return {...filterBy}
+    return { ...filterBy }
 }
 
 function setFilterBy(filterBy = {}) {
-     if (filterBy.title !== undefined) filterBy.title = filterBy.title
+    if (filterBy.title !== undefined) filterBy.title = filterBy.title
     if (filterBy.price !== undefined) filterBy.price = filterBy.price
     return filterBy
 }
@@ -75,5 +91,6 @@ function getNextBookId(carId) {
 }
 
 function getDefaultFilter() {
-    return {title: '', price: 0}
+    return { title: '', price: 0 }
 }
+

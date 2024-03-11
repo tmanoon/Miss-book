@@ -2,8 +2,7 @@
   box-sizing: border-box;
 }
 
-html {
-}
+html {}
 
 body {
   margin: 0;
@@ -15,7 +14,9 @@ h2,
 h3,
 h4,
 h5,
-h6 {
+h6,
+p,
+div {
   padding-inline-start: 30px;
   font-family: gwendolyn, cursive;
 }
@@ -29,7 +30,7 @@ a {
   color: unset;
 }
 
-li { 
+li {
   list-style-type: none;
 }
 

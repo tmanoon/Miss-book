@@ -1,11 +1,37 @@
-const { useState } = React
+const { useState, useEffect } = React
+const { useParams, useNavigate } = ReactRouter
+const { Link } = ReactRouterDOM
+
+import { bookService} from '../services/book.service.js'
 import { BookCategories } from "../cmps/BookCategories.jsx"
 import { BookAuthors } from '../cmps/BookAuthors.jsx'
 import { LongTxt } from "../cmps/LongTxt.jsx"
 
-export function BookDetails({ book, onGoBack }) {
+export function BookDetails() {
     const [length, setLength] = useState(100)
     const [isShowMore, setShowMoreMode] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
+    const params = useParams()
+    const navigate = useNavigate()
+    const [book, setBook] = useState(null)
+
+    useEffect(() => {
+        loadBook()
+    }, [params.bookId])
+
+    function loadBook() {
+        setIsLoading(true)
+        bookService.get(params.bookId)
+            .then(book => setBook(book))
+            .catch(err => {
+                console.log('Had issues loading book', err)
+                navigate('/book')
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
+    }
+
     function checkPageCount() {
         if (book.pageCount > 500) return <h4>Serious Reading</h4>
         else if (book.pageCount > 200) return <h4>Descent Reading</h4>
@@ -35,30 +61,33 @@ export function BookDetails({ book, onGoBack }) {
         return
     }
 
-    return <div className="book-details-modal">
-        <button onClick={onGoBack}>Go back</button>
-        <h1>{JSON.stringify(book.title)}</h1>
-        <h2>{JSON.stringify(book.subtitle)}</h2>
-        <BookAuthors book={book} />
-        <div>Published Date: {JSON.stringify(book.publishedDate)} {checkBookByDate()}</div>
-        <h3>Description: </h3>
-        <p>{book.description.slice(0, 100)}</p>
-        {!isShowMore && <button onClick={toggleShowMore}>Show More</button>}
-        {isShowMore && (
-            <React.Fragment>
-                <label htmlFor="length">How many characters?</label>
-                <input type="number" value={length} step="5" min="100" max={`${book.description.length}`} onChange={onChangeLength} />
-                {isShowMore && <LongTxt txt={book.description} length={length} />}
-                <button onClick={toggleShowMore}>Show Less</button>
-            </React.Fragment>
-        )}
-        <div>Page Count: {JSON.stringify(book.pageCount)} {checkPageCount()}</div>
-        <BookCategories book={book} />
-        <img src={book.thumbnail} />
-        <p>Language: {book.language}</p>
-        <p>Price: <span className={`span ${checkPriceValue()}`}>{JSON.stringify(book.listPrice.amount)}</span></p>
-        <p>Currency Code: {JSON.stringify(book.listPrice.currencyCode)}</p>
-        <p>Is it on sale: {book.listPrice.isOnSale ? 'Yes' : 'No'}</p>
-        {book.listPrice.isOnSale && <dialog open className="on-sale-modal">Pay attention!<br />This book is on sale!<form method="dialog"><button>X</button></form></dialog>}
-    </div>
+    if (isLoading) return <div>Loading details...</div>
+    return (
+        <div className="book-details-modal">
+            <Link to="/book"><button>Go back</button></Link>
+            <h1>{JSON.stringify(book.title)}</h1>
+            <h2>{JSON.stringify(book.subtitle)}</h2>
+            <BookAuthors book={book} />
+            <div>Published Date: {JSON.stringify(book.publishedDate)} {checkBookByDate()}</div>
+            <h3>Description: </h3>
+            <p>{book.description.slice(0, 100)}</p>
+            {!isShowMore && <button onClick={toggleShowMore}>Show More</button>}
+            {isShowMore && (
+                <React.Fragment>
+                    <label htmlFor="length">How many characters?</label>
+                    <input type="number" value={length} step="5" min="100" max={`${book.description.length}`} onChange={onChangeLength} />
+                    {isShowMore && <LongTxt txt={book.description} length={length} />}
+                    <button onClick={toggleShowMore}>Show Less</button>
+                </React.Fragment>
+            )}
+            <div>Page Count: {JSON.stringify(book.pageCount)} {checkPageCount()}</div>
+            <BookCategories book={book} />
+            <img src={book.thumbnail} />
+            <p>Language: {book.language}</p>
+            <p>Price: <span className={`span ${checkPriceValue()}`}>{JSON.stringify(book.listPrice.amount)}</span></p>
+            <p>Currency Code: {JSON.stringify(book.listPrice.currencyCode)}</p>
+            <p>Is it on sale: {book.listPrice.isOnSale ? 'Yes' : 'No'}</p>
+            {book.listPrice.isOnSale && <dialog open className="on-sale-modal">Pay attention!<br />This book is on sale!<form method="dialog"><button>X</button></form></dialog>}
+        </div>
+    )
 }
