@@ -99,7 +99,7 @@ export function BookDetails() {
                     Pay attention!<br />This book is on sale!
                     <button onClick={onExitModal}>X</button></div>)}
             <div className="reviews">
-                {!book.reviews && <div className="no-reviews-div">No reviews yet.</div>}
+                {!book.reviews && <div className="no-reviews-div">No reviews yet. <br/> Add yours!</div>}
                 {book.reviews &&
                     <ul>
                         {book.reviews.map(review => {
@@ -107,6 +107,7 @@ export function BookDetails() {
                                 <h1>{review.fullname}</h1>
                                 <h3>{review.rating}</h3>
                                 <p>{review.readAt}</p>
+                                <button onClick={(event) => onDeleteBtn(event)}>Delete Review</button>
                             </li>
                         })}
                     </ul>}

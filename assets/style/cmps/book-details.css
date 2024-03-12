@@ -13,3 +13,11 @@
     background-color: var(--clr2bg);
     border-radius: .3em;
 }
+
+.no-reviews-div {
+    font-size: 5em;
+}
+
+.no-reviews-div > span {
+    color: red;
+}

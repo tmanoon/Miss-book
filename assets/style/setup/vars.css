@@ -5,7 +5,7 @@
   --clr1bg: rgb(191, 94, 191);
   --clr1bg-light: rgb(205, 221, 200);
   --clr2bg: rgb(243, 165, 208);
-  --clr2bg-light: rgb(247, 185, 219);
+  --clr2bg-light: rgba(248, 206, 229, 0.645);
 
   --gray1: rgb(240, 240, 240);
   --gray2: rgb(155, 155, 155);

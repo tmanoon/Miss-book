@@ -33,6 +33,10 @@ function query(filterBy) {
             if (filterBy.price) {
                 books = books.filter(book => book.listPrice.amount >= filterBy.price)
             }
+
+            if (filterBy.pageCount) {
+                books = books.filter(book => book.pageCount <= filterBy.pageCount)
+            }
             return books
         })
 }
@@ -42,7 +46,7 @@ function get(bookId) {
 }
 
 function remove(bookId) {
-    return storageService.remove(BOOK_KEY, carId)
+    return storageService.remove(BOOK_KEY, bookId)
 }
 
 function save(book) {
@@ -93,7 +97,7 @@ function getNextBookId(bookId) {
 }
 
 function getDefaultFilter() {
-    return { title: '', price: 0 }
+    return { title: '', price: 0, pageCount: 0 }
 }
 
 function addReview(bookId, review) {
