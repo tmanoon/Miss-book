@@ -15,7 +15,6 @@ export function BookFilter({ onSetFilter, filterBy }) {
 	function handleChange({ target }) {
 		let { value, name: field, type } = target
 		if (type === 'number') value = +value
-		// if(type ==='checkbox') value = target.checked
 		setFilterByToEdit((prevFilterBy) => ({ ...prevFilterBy, [field]: value }))
 	}
 

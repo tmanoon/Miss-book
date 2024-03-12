@@ -7,12 +7,14 @@ import { bookService } from '../services/book.service.js'
 import { BookCategories } from "../cmps/BookCategories.jsx"
 import { BookAuthors } from '../cmps/BookAuthors.jsx'
 import { LongTxt } from "../cmps/LongTxt.jsx"
+import { ReviewList } from '../cmps/ReviewList.jsx'
 
 export function BookDetails() {
     const [isSaleModalVisible, setSaleModalVisible] = useState(true);
     const [length, setLength] = useState(100)
     const [isShowMore, setShowMoreMode] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
+    const [reviews, setReviews] = useState([])
     const params = useParams()
     const navigate = useNavigate()
     const [book, setBook] = useState(null)
@@ -21,10 +23,14 @@ export function BookDetails() {
         loadBook()
     }, [params.bookId])
 
+
     function loadBook() {
         setIsLoading(true)
         bookService.get(params.bookId)
-            .then(book => setBook(book))
+            .then(book => {
+                setBook(book)
+                setReviews(book.reviews || [])
+            })
             .catch(err => {
                 console.log('Had issues loading book', err)
                 navigate('/book')
@@ -32,6 +38,10 @@ export function BookDetails() {
             .finally(() => {
                 setIsLoading(false)
             })
+    }
+
+    function handleReviewAdded(updatedBook) {
+        setReviews(updatedBook.reviews)
     }
 
     function checkPageCount() {
@@ -70,7 +80,7 @@ export function BookDetails() {
 
     if (isLoading) return <div>Loading details...</div>
     return (
-        <div className="book-details-modal">
+        <div className="book-details-modal flex flex-column align-center">
             <Link to="/book"><button>Go back</button></Link>
             <h1>{JSON.stringify(book.title)}</h1>
             <h2>{JSON.stringify(book.subtitle)}</h2>
@@ -95,23 +105,13 @@ export function BookDetails() {
             <p>Currency Code: {JSON.stringify(book.listPrice.currencyCode)}</p>
             <p>Is it on sale: {book.listPrice.isOnSale ? 'Yes' : 'No'}</p>
             {book.listPrice.isOnSale && isSaleModalVisible && (
-                <div className="on-sale-modal" onClick={onExitModal}>
+                <div className="on-sale-modal flex align-center" onClick={onExitModal}>
                     Pay attention!<br />This book is on sale!
                     <button onClick={onExitModal}>X</button></div>)}
             <div className="reviews">
-                {!book.reviews && <div className="no-reviews-div">No reviews yet. <br/> Add yours!</div>}
-                {book.reviews &&
-                    <ul>
-                        {book.reviews.map(review => {
-                            return <li key={review.id}>
-                                <h1>{review.fullname}</h1>
-                                <h3>{review.rating}</h3>
-                                <p>{review.readAt}</p>
-                                <button onClick={(event) => onDeleteBtn(event)}>Delete Review</button>
-                            </li>
-                        })}
-                    </ul>}
-                <AddReview />
+                {!reviews.length && <div className="no-reviews-div">No reviews yet. Add yours!</div>}
+                {reviews.length > 0 && <ReviewList reviews={reviews} />}
+                <AddReview bookId={book.id} onReviewAdded={handleReviewAdded} />
             </div>
         </div>
     )

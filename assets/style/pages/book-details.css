@@ -14,8 +14,12 @@
     border-radius: .3em;
 }
 
+.on-sale-modal > button {
+    color: var(--clr1bg);
+}
+
 .no-reviews-div {
-    font-size: 5em;
+    font-size: 3em;
 }
 
 .no-reviews-div > span {

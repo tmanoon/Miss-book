@@ -1,6 +1,6 @@
 import { utilService } from './util.service.js'
 import { storageService } from './async-storage.service.js'
-// import { booksArr } from '../books.js'
+import { booksArr } from '../books.js'
 
 const BOOK_KEY = 'bookDB'
 let reviews = []
@@ -20,11 +20,23 @@ export const bookService = {
     getDefaultFilter
 }
 
-// utilService.saveToStorage(BOOK_KEY, booksArr)
+
+_createBooks()
+
+function _createBooks() {
+    let books = utilService.loadFromStorage(BOOK_KEY)
+    if (!books || !books.length) {
+        books = booksArr
+        utilService.saveToStorage(BOOK_KEY, books)
+    }
+}
+
+utilService.saveToStorage(BOOK_KEY, booksArr)
 window.bs = bookService
 
 function query(filterBy) {
     return storageService.query(BOOK_KEY)
+
         .then(books => {
             if (filterBy.title) {
                 const regex = new RegExp(filterBy.title, 'i')
@@ -51,9 +63,9 @@ function remove(bookId) {
 
 function save(book) {
     if (book.id) {
-        return storageService.put(BOOK_KEY, car)
+        return storageService.put(BOOK_KEY, book)
     } else {
-        return storageService.post(BOOK_KEY, car)
+        return storageService.post(BOOK_KEY, book)
     }
 }
 
@@ -101,18 +113,21 @@ function getDefaultFilter() {
 }
 
 function addReview(bookId, review) {
-    const currBook = get(bookId)
-    if(!currBook.reviews) {
-        currBook.reviews = [review]
-    } else {
-        currBook.reviews.push(review)
-    }
+    return get(bookId)
+        .then(book => {
+            if (!book.reviews) {
+                book.reviews = [review]
+            } else {
+                book.reviews.push(review)
+            }
+            return save(book) // Return the promise from the save function
+        })
+        .catch(err => console.log(err))
 }
-
 function _setNextPrevBookId(book) {
     return storageService.query(BOOK_KEY).then((books) => {
-        const bookIdx = books.findIndex((currCar) => currCar.id === car.id)
-        const nextBook = books[carIdx + 1] ? books[bookIdx + 1] : books[0]
+        const bookIdx = books.findIndex((currBook) => currBook.id === book.id)
+        const nextBook = books[bookIdx + 1] ? books[bookIdx + 1] : books[0]
         const prevBook = books[bookIdx - 1] ? books[bookIdx - 1] : books[books.length - 1]
         book.nextBookId = nextBook.id
         book.prevBookId = prevBook.id
