@@ -31,10 +31,9 @@ function _createBooks() {
     }
 }
 
-utilService.saveToStorage(BOOK_KEY, booksArr)
 window.bs = bookService
 
-function query(filterBy) {
+function query(filterBy = getDefaultFilter()) {
     return storageService.query(BOOK_KEY)
 
         .then(books => {
@@ -55,6 +54,7 @@ function query(filterBy) {
 
 function get(bookId) {
     return storageService.get(BOOK_KEY, bookId)
+        .then(book => _setNextPrevBookId(book))
 }
 
 function remove(bookId) {
@@ -131,6 +131,7 @@ function _setNextPrevBookId(book) {
         const prevBook = books[bookIdx - 1] ? books[bookIdx - 1] : books[books.length - 1]
         book.nextBookId = nextBook.id
         book.prevBookId = prevBook.id
+        console.log(book)
         return book
     })
 }

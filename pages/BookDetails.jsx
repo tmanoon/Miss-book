@@ -21,6 +21,7 @@ export function BookDetails() {
 
     useEffect(() => {
         loadBook()
+        console.log(params.bookId)
     }, [params.bookId])
 
 
@@ -82,6 +83,10 @@ export function BookDetails() {
     return (
         <div className="book-details-modal flex flex-column align-center">
             <Link to="/book"><button>Go back</button></Link>
+            <div className='prev-next-cars flex space-between'>
+                <Link to={`/book/${book.prevBookId}`}><button>Previous</button></Link>
+                <Link to={`/book/${book.nextBookId}`}><button>Next</button></Link>
+            </div>
             <h1>{JSON.stringify(book.title)}</h1>
             <h2>{JSON.stringify(book.subtitle)}</h2>
             <BookAuthors book={book} />
